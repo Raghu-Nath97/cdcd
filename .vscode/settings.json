@@ -1,0 +1,6 @@
+{
+    "chat.useAgentSkills": true,
+    "chat.tools.terminal.autoApprove": {
+        "humioctl": true
+    }
+}

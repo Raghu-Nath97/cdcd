@@ -1,0 +1,67 @@
+{
+  "servers": {
+    "genai-platform": {
+      "type": "http",
+      "url": "https://genai-platform-dev.pg.com/stg/mcp/v1/"
+    },
+    "mcp-atlassian": {
+      "command": "uvx",
+      "args": ["--python", "/opt/homebrew/bin/python3.12", "mcp-atlassian"],
+      "env": {
+        "UV_PYTHON_PREFERENCE": "only-system",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "CONFLUENCE_URL": "https://jira-pg-ds.atlassian.net/",
+        "CONFLUENCE_USERNAME": "${input:confluence-username}",
+        "CONFLUENCE_API_TOKEN": "${input:confluence-api-token}"
+      }
+    },
+    "spyglass-mcp": {
+      "type": "http",
+      "url": "https://InternalAPI.pg.com/othersupportingdata/it/v1/spyglass/apihub-prod/v1/mcp/grafana",
+      "headers": {
+        "Authorization": "Basic ${input:mcp-spyglass-auth-key}",
+        "Ocp-Apim-Subscription-Key": "${input:mcp-spyglass-subscription-key}"
+      }
+    },
+    "github": {
+      "command": "/opt/homebrew/bin/github-mcp-server",
+      "args": ["stdio"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github-pat}",
+        "GITHUB_TOOLSETS": "context,repos,issues,pull_requests,actions"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "confluence-username",
+      "type": "promptString",
+      "description": "Confluence username — your P&G email address (e.g., firstname.lastname@pg.com). See .github/skills/aie-sre-onboarding/PREREQUISITES.md section 'Confluence' for details."
+    },
+    {
+      "id": "confluence-api-token",
+      "type": "promptString",
+      "description": "Confluence API token — create at https://id.atlassian.com/manage-profile/security/api-tokens. See .github/skills/aie-sre-onboarding/PREREQUISITES.md section 'Confluence'.",
+      "password": true
+    },
+    {
+      "id": "mcp-spyglass-auth-key",
+      "type": "promptString",
+      "description": "Spyglass Basic-auth key — base64 of 'user:pass'. Run: printf 'user:pass' | base64. See .github/skills/aie-sre-onboarding/PREREQUISITES.md section 'Spyglass'.",
+      "password": true
+    },
+    {
+      "id": "mcp-spyglass-subscription-key",
+      "type": "promptString",
+      "description": "Spyglass APIM subscription key — provided by the AIE SRE lead. See .github/skills/aie-sre-onboarding/PREREQUISITES.md section 'Spyglass'.",
+      "password": true
+    },
+    {
+      "id": "github-pat",
+      "type": "promptString",
+      "description": "GitHub fine-grained PAT — scoped to de-cf-chatpg-{core,agents,infra} in the procter-gamble org, with SSO authorized. Create at https://github.com/settings/tokens?type=beta. See .github/skills/aie-sre-onboarding/PREREQUISITES.md section 'GitHub'.",
+      "password": true
+    }
+  ]
+}
+ 

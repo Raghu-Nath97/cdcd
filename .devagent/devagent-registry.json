@@ -1,0 +1,209 @@
+{
+  "devagent_version": "3.0.2.dev2+ge2526de86",
+  "install_date": "2026-03-27T11:12:36.514734+00:00",
+  "installed_files": {
+    "copilot": {
+      "ai-apps": {
+        "agents": [
+          "doc-retriever.agent.md",
+          "ai-apps.agent.md"
+        ],
+        "ai_docs": [
+          "ai_apps/README.md",
+          "ai_apps/ai-apps-integration.md"
+        ],
+        "instructions": [
+          "ai-apps.instructions.md"
+        ]
+      },
+      "atlassian": {
+        "agents": [
+          "atlassian.agent.md"
+        ]
+      },
+      "genai": {
+        "agents": [
+          "doc-retriever.agent.md",
+          "genai.agent.md"
+        ]
+      },
+      "general": {
+        "prompts": [
+          "sql-optimization.prompt.md"
+        ]
+      },
+      "langchain": {
+        "agents": [
+          "doc-retriever.agent.md",
+          "langchain.agent.md"
+        ],
+        "ai_docs": [
+          "langchain/README.md",
+          "langchain/USAGE_GUIDE.md",
+          "langchain/agent-patterns.md",
+          "langchain/memory-state.md",
+          "langchain/middleware-guide.md",
+          "langchain/model-integration.md",
+          "langchain/streaming-patterns.md",
+          "langchain/structured-output.md",
+          "langchain/tool-examples.md",
+          "langchain/troubleshooting.md"
+        ],
+        "instructions": [
+          "langchain.instructions.md"
+        ],
+        "skills": [
+          "langchain-agent-workflows/SKILL.md",
+          "langchain-tooling-basics/SKILL.md"
+        ]
+      },
+      "langgraph": {
+        "agents": [
+          "doc-retriever.agent.md",
+          "langgraph.agent.md"
+        ],
+        "ai_docs": [
+          "langgraph/README.md",
+          "langgraph/agent-architectures.md",
+          "langgraph/core-concepts.md",
+          "langgraph/examples.md",
+          "langgraph/human-in-the-loop.md",
+          "langgraph/persistence.md"
+        ],
+        "instructions": [
+          "langgraph.instructions.md"
+        ],
+        "prompts": [
+          "create-langgraph-workflow.prompt.md",
+          "add-langgraph-persistence.prompt.md",
+          "debug-langgraph.prompt.md"
+        ],
+        "skills": [
+          "building-langgraph-agents/SKILL.md",
+          "langgraph-fundamentals/SKILL.md",
+          "langgraph-human-in-the-loop/SKILL.md",
+          "langgraph-persistence/SKILL.md"
+        ]
+      },
+      "mro": {
+        "agents": [
+          "doc-retriever.agent.md",
+          "mro.agent.md"
+        ],
+        "ai_docs": [
+          "mro/checklists/data-qa-checklist.md",
+          "mro/checklists/genai-qa-checklist.md",
+          "mro/checklists/model-qa-checklist.md",
+          "mro/common_pitfalls/business.md",
+          "mro/common_pitfalls/ethics.md",
+          "mro/common_pitfalls/ml_ai.md",
+          "mro/common_pitfalls/other.md",
+          "mro/common_pitfalls/software_development.md",
+          "mro/mro-assessment-tmpl.md",
+          "mro/mro-tracking-template.md"
+        ]
+      },
+      "pygentic": {
+        "agents": [
+          "doc-retriever.agent.md",
+          "pygentic.agent.md"
+        ],
+        "ai_docs": [
+          "pygentic/core/agents.md",
+          "pygentic/core/overview.md",
+          "pygentic/core/principles.md",
+          "pygentic/guides/components.md",
+          "pygentic/index.md"
+        ],
+        "instructions": [
+          "pygentic.instructions.md"
+        ],
+        "prompts": [
+          "create-pygentic-flow.prompt.md"
+        ]
+      },
+      "pyrogai": {
+        "agents": [
+          "pyrogai.agent.md",
+          "doc-retriever.agent.md"
+        ],
+        "ai_docs": [
+          "pyrogai/pyrogai-framework-reference.md",
+          "pyrogai/pyrogai-patterns-examples.md",
+          "pyrogai/pyrogai-testing-guide.md",
+          "pyrogai/pyrogai-troubleshooting-guide.md"
+        ],
+        "instructions": [
+          "pyrogai-step-standards.instructions.md",
+          "pyrogai-pipeline-yaml.instructions.md",
+          "pyrogai-testing.instructions.md"
+        ],
+        "prompts": [
+          "pyrogai-step-generator.prompt.md",
+          "pyrogai-config-generator.prompt.md",
+          "pyrogai-debugger.prompt.md",
+          "pyrogai-notebook-workflow.prompt.md"
+        ],
+        "skills": [
+          "developing-pyrogai-pipelines/SKILL.md",
+          "testing-pyrogai-steps/SKILL.md"
+        ]
+      },
+      "python": {
+        "agents": [
+          "investigate.agent.md",
+          "janitor.agent.md"
+        ],
+        "ai_docs": [
+          "python/REAMDE.md",
+          "python/python-code-development-standards.md",
+          "python/python-code-review-cheat-sheet.md"
+        ],
+        "instructions": [
+          "python.instructions.md"
+        ],
+        "prompts": [
+          "code-review.prompt.md"
+        ],
+        "skills": [
+          "reviewing-python-code/SKILL.md"
+        ]
+      },
+      "recommended": {
+        "agents": [
+          "architect.agent.md",
+          "beast.agent.md"
+        ],
+        "prompts": [
+          "create-doc.prompt.md",
+          "create-copilot-instructions.prompt.md",
+          "execute-checklist.prompt.md",
+          "feature-branch.prompt.md"
+        ],
+        "skills": [
+          "creating-copilot-customizations/SKILL.md",
+          "multiline-git-commands/SKILL.md"
+        ]
+      }
+    }
+  },
+  "installed_mcps": {
+    "copilot": [
+      "genai-platform"
+    ]
+  },
+  "selected_frameworks": [
+    "recommended",
+    "pyrogai",
+    "python",
+    "langgraph",
+    "langchain",
+    "ai-apps",
+    "pygentic",
+    "genai",
+    "atlassian",
+    "mro",
+    "general"
+  ],
+  "version": "3.0"
+}
