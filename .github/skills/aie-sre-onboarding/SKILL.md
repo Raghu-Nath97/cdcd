@@ -52,15 +52,29 @@ Each confluence tree section for each application/platform contains the followin
 - Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/4345495562/AskPG
 ### ChatPG:
 - Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/4354081339/ChatPG
-### ChatPG:
-- Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/4354081339/ChatPG
-- **For an onboarding overview of ChatPG, run the slash command `/chatpg-onboarding`.** That prompt reads the local LeanIX-exported architecture PNGs and produces a concise 7-section briefing with ASCII + Mermaid flow diagrams generated from those PNGs. Use it for any "what is ChatPG / how does it work / how is it managed / explain the architecture" question.
-- Reference architecture PNGs (offline, exported from LeanIX) live under `.github/skills/aie-sre-onboarding/Docs/ChatPG/`.
-- Reference architecture PNGs (offline, exported from LeanIX) live under `.github/skills/aie-sre-onboarding/Docs/ChatPG/`.
+- **For an onboarding overview of ChatPG, run the slash command `/chatpg-onboarding`.** That prompt reads the local LeanIX-derived markdown analyses, fetches the ChatPG Confluence page live via the Atlassian MCP, and produces a concise 8-section briefing with **ASCII flow diagrams only**. Use it for any "what is ChatPG / how does it work / how is it managed / explain the architecture" question from a new joiner.
+- Local source-of-truth for the diagrams: each `.drawio.png` under `.github/skills/aie-sre-onboarding/Docs/ChatPG/` has a matching `.md` analysis next to it. The `.md` is what the prompt reads (so it works on text-only models); the `.png` is for human cross-check.
 ### ImagePG:
 - Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/4400185560/ImagePG
 ### InsightsPG:
 - Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/5045616664/InsightsPG
+
+## Architectural Diagram Rules (ASCII Only)
+
+Whenever this onboarding agent is asked to draw any architectural, request-flow, or deployment diagram — for ChatPG, GenAI Platform, or any other application managed by the team — follow these rules. They exist so a brand-new joiner can read the picture in 30 seconds without prior context.
+
+- **ASCII only.** No Mermaid, no PlantUML, no other diagram syntaxes. Render every diagram inside a fenced ` ```text ` block.
+- **One diagram answers one question.** A request-flow diagram should not also try to be a deployment diagram. If two questions need to be answered, draw two diagrams.
+- **Default layouts:**
+  - For *request / response journeys* (a user → a service → back to the user): lay the main happy path **left-to-right on one straight horizontal line.** Do not snake the main flow up and down.
+  - For *infrastructure / deployment views*: group components by **Azure subscription** in clearly labelled outer boxes, with resource-group names on the top border. Lay components vertically inside each subscription box.
+- **Branch side-systems off the main line as a labelled cluster.** Auth providers, monitoring sinks, and similar groups must be drawn as a single cluster (e.g. `Auth chain` containing EntraID + PingFederate + PingID MFA + Authle + AD), never as 5 free-floating boxes.
+- **Use Unicode box-drawing characters:** `┌ ┐ └ ┘ │ ─ ├ ┤ ┬ ┴ ┼ ▶ ◀ ▲ ▼`. Same-height boxes, one space of label padding inside each box.
+- **One arrow style per diagram:** `──▶` for one-way calls, `◀──▶` for round-trips. Never mix within the same diagram.
+- **No crossing lines.** If two arrows would cross, restructure the layout — never draw through.
+- **Use exact labels from the source markdown analyses** in `.github/skills/aie-sre-onboarding/Docs/<App>/`. If the source says `mlwCHATPGPROD` or `PingFederate Prod Instance`, write that — do not abbreviate, rename, or "tidy up" the label.
+- **One-line caption under each diagram** naming the source file, e.g. `Source: ChatPG - Communication Flow Diagram.md`.
+- **Newbie-readable is the goal.** When in doubt, choose the simplest picture that still shows the real flow. Cut decorative boxes; keep only the components a new SRE actually needs to know on day one. Offer a "want me to go deeper?" follow-up at the end if the reader needs the full picture.
 
 ## Setup Onboarding Agent
 - Verify if uvx is installed on the system where the onboarding agent will be set up by running the command `uvx --version` in the terminal or command prompt.

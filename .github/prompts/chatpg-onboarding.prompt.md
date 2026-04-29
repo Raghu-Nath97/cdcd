@@ -1,99 +1,151 @@
 ---
-description: 'ChatPG onboarding overview — invoke with /chatpg-onboarding when a new AIE SRE asks "what is ChatPG", "explain ChatPG", "how does ChatPG work", or "how is ChatPG managed". Produces a concise 7-section briefing with clean ASCII flow diagrams generated from the markdown analyses of the LeanIX-exported architecture diagrams.'
+description: 'ChatPG onboarding overview — invoke with /chatpg-onboarding when a new AIE SRE asks "what is ChatPG", "explain ChatPG", "how does ChatPG work", "how is ChatPG managed", or anything similar in the early days of onboarding. Produces a tight, newbie-first 8-section briefing grounded in the local LeanIX-derived markdown analyses and the ChatPG Confluence page (fetched live via the Atlassian MCP). Diagrams are ASCII only — never Mermaid.'
 mode: 'agent'
-tools: ['editFiles', 'search', 'codebase']
+tools: ['editFiles', 'search', 'codebase', 'atlassian/*']
 ---
 
 # ChatPG Onboarding Briefing
 
-You are giving a **single, focused onboarding briefing** on ChatPG to a new AIE SRE. Your job is to **read the authoritative source material yourself**, then synthesize a tight overview. Do **not** answer from memory of ChatPG.
+You are giving a **single, focused onboarding briefing on ChatPG to a brand-new AIE SRE**. Treat the reader as someone who has never opened the ChatPG repo, never read its Confluence page, and does not yet know the P&G enterprise-AI vocabulary. Your job is to **read the authoritative source material yourself**, then synthesize a tight, sequential overview.
+
+Do **not** answer from memory of ChatPG.
+Do **not** dump everything you know — newbies need a clean mental model first, not a brain-dump.
 
 ---
 
-## Step 1 — Read the source material (mandatory, in this order)
+## Step 1 — Gather source material (mandatory, in this exact order)
 
-The source of truth for ChatPG architecture is a set of **markdown analysis files** in `.github/skills/aie-sre-onboarding/Docs/ChatPG/`. Each `.md` file is a structured text description of a LeanIX-exported drawio diagram (the matching `.drawio.png` lives alongside it for human reference). The `.md` files exist precisely so this prompt works on any model — vision-capable or text-only.
+The source of truth is a small, intentional set of files. Read all of them before writing a single word of the response.
 
-Before writing a single word of the response, do all of the following:
-
-1. **Read the onboarding skill** at `.github/skills/aie-sre-onboarding/SKILL.md` (canonical Confluence/Jira links and team context).
-2. **List the diagrams folder** with `list_dir` on `.github/skills/aie-sre-onboarding/Docs/ChatPG/` and **read every `.md` file** you find with `read_file`. Expected files (names may vary):
+1. **Read the onboarding skill** at `.github/skills/aie-sre-onboarding/SKILL.md` — gives you the canonical Confluence/Jira links, the diagram-drawing rule, and the team context.
+2. **List and read every `.md` analysis** in `.github/skills/aie-sre-onboarding/Docs/ChatPG/`:
    - `ChatPG - AED.md` — Application Environment Diagram (what ChatPG depends on, integrations)
-   - `ChatPG - TID.md` — Technical Infrastructure Diagram (subscriptions, resource groups, AKS, networking, identity flow)
-   - `ChatPG - Communication Flow Diagram.md` — request flow between components
-3. *(Optional, only if the user asked something time-sensitive)* Use `mcp_com_atlassian_getConfluencePage` on the ChatPG Confluence page (ID from the onboarding skill) to confirm narrative facts. Skip if MCP is not configured.
-
-If a specific `.md` file is missing, say so explicitly and only build the diagram(s) for which you have source material — do not invent components for the missing one.
+   - `ChatPG - TID.md` — Technical Infrastructure Diagram (subscriptions, resource groups, AKS, networking)
+   - `ChatPG - Communication Flow Diagram.md` — end-to-end request flow between components
+   The matching `.drawio.png` next to each `.md` is for **human cross-check only** — the `.md` is the text source of truth and the reason this prompt works on text-only models.
+3. **Fetch the ChatPG Confluence page live** using the Atlassian MCP tool (`mcp_com_atlassian_getConfluencePage` or equivalent) on page ID **`4354081339`** (TURING space — URL in the onboarding skill). Pull narrative facts the diagrams don't carry: business purpose, owning team, current incidents, recent changes. If the MCP server isn't running or returns auth errors, **say so once at the top of the briefing** ("Atlassian MCP not configured — briefing built from local Docs/ChatPG/ analyses only") and continue with local sources. Do **not** halt the whole briefing for an MCP failure.
+4. *(Optional, only when the user asked a question that needs Jira context — e.g. "what incidents has ChatPG had")* Use the Atlassian MCP to query the TURING Jira project. Skip otherwise.
 
 ### If the `.md` analysis files are missing entirely
 
-This prompt **requires** the markdown analyses. Do **not** fall back to memory or to drawing diagrams from generic ChatPG knowledge. If `Docs/ChatPG/` contains only `.drawio.png` files and no `.md` files, stop and tell the user:
+This prompt **requires** the markdown analyses. Do **not** fall back to drawing diagrams from generic ChatPG knowledge. If `.github/skills/aie-sre-onboarding/Docs/ChatPG/` contains only `.drawio.png` files and no `.md` files, stop and tell the user:
 
 > *"This prompt needs markdown analyses of the ChatPG diagrams in `.github/skills/aie-sre-onboarding/Docs/ChatPG/`. The folder currently has only the `.drawio.png` exports and no `.md` files. Generate a `.md` analysis for each diagram (component list + connection list) and re-run `/chatpg-onboarding`."*
 
 Do not produce a partial briefing. Refuse cleanly.
 
+If a single `.md` is missing but the others are present, say so explicitly and skip only the section that depended on it — never invent components.
+
 ---
 
-## Step 2 — Produce the briefing in this exact structure
+## Step 2 — Produce the briefing in this exact 8-section structure
 
-### 1. What ChatPG is — one short paragraph
+Sections are **sequential by design** — a newcomer should read top-to-bottom and gradually build understanding. Keep prose tight; the diagrams do most of the heavy lifting.
 
-3–5 sentences explaining what ChatPG is, who uses it, and why it is more than an LLM wrapper. Ground every claim in the AED `.md` or the onboarding skill.
+### 1. ChatPG in one paragraph
 
-### 2. The three-layer mental model
+3–4 sentences in plain language: what ChatPG is, who uses it, and **why it is more than an LLM wrapper**. Source: AED `.md` + Confluence page. Avoid acronyms in this paragraph — this is the only section a busy new joiner is guaranteed to read.
 
-Short table mapping the three layers (Core Product / Agent Runtime / Cloud Infrastructure) to their repos (`de-cf-chatpg-core`, `de-cf-chatpg-agents`, `de-cf-chatpg-infra`) with a one-line responsibility each. If the AED `.md` uses different layer names, use those.
+### 2. The mental model — one small ASCII block + a 3-row table
 
-### 3. Request flow — generate one ASCII diagram from the Communication Flow `.md`
+First, render this exact mental-model ASCII block (or a clearly labelled equivalent) in a fenced ` ```text ` block. It is the single biggest "aha" moment for newcomers, so do not skip it:
 
-Render a single, clean ASCII diagram (no Mermaid) in a fenced ` ```text ` block, sourced from `ChatPG - Communication Flow Diagram.md`. Use Unicode box-drawing characters (`┌ ┐ └ ┘ │ ─ ├ ┤ ┬ ┴ ┼ ▶ ◀ ▲ ▼`).
+```text
+┌────────────────────────────────────────────────────────────┐
+│                       ChatPG                              │
+│  ┌──────────────┐  ┌───────────────┐  ┌─────────────────┐ │
+│  │ Core Product │  │ Agent Runtime │  │ Cloud Infra     │ │
+│  └──────────────┘  └───────────────┘  └─────────────────┘ │
+└────────────────────────────────────────────────────────────┘
+```
 
-**Layout rules for clarity:**
-- Lay the main happy path **left-to-right** in one straight horizontal line. Avoid winding the main flow up and down.
-- Branch side-systems (auth providers, MFA, directory lookups) **off the main line as short stubs** — above for one group, below for another — so the eye can follow the request without crossing arrows.
-- Keep all boxes the same height. Pad labels with one space inside each box.
-- Use `──▶` for one-way calls and `◀──▶` for round-trips. Do **not** mix arrow styles within one diagram.
-- No crossing lines. If two arrows would cross, restructure the layout instead of drawing through.
-- Group related sub-systems (e.g. `Authle / EntraID / Ping Federate / PingID MFA / MSTF AD`) in a **clearly labeled cluster** rather than as 5 free-floating boxes.
-- Add a one-line caption under the diagram naming the source: `Source: ChatPG - Communication Flow Diagram.md`.
+Then a 3-row table mapping each layer to its repo and a one-line responsibility:
 
-Use the **exact component labels from the `.md`** (e.g. if the `.md` says "PingFederate Prod Instance", write that — not "PingFed").
+| Layer | Repo | What it owns |
+|-------|------|--------------|
+| Core Product | `de-cf-chatpg-core` | Frontend UI + backend APIs + persistence |
+| Agent Runtime | `de-cf-chatpg-agents` | Tool-calling agents, deep research flows, LangGraph state |
+| Cloud Infra | `de-cf-chatpg-infra` | AKS, Flux/Kustomize overlays, networking, secrets |
 
-### 4. How it is built — short bullets only
+Source: AED `.md` + onboarding skill. If the `.md` uses different layer names, use those.
 
-Stack summary by layer (frontend / backend / agent runtime / infra). Source from the onboarding skill and any stack-relevant facts in the AED/TID `.md`. ~6 bullets total.
+### 3. How a single user request flows — one ASCII diagram + 6–8 plain-English steps
 
-### 5. How it is managed — generate one ASCII diagram from the TID `.md`
+**Diagram:** generated from `ChatPG - Communication Flow Diagram.md`. Render exactly **one** ASCII diagram in a fenced ` ```text ` block. Follow these layout rules — they exist to keep the picture newbie-readable:
 
-Render a single, clean ASCII diagram (no Mermaid) in a fenced ` ```text ` block, sourced from `ChatPG - TID.md`. Focus on the **deploy + operations** picture: subscriptions, resource groups, AKS clusters, networking, monitoring — whatever the TID `.md` describes.
+- Lay the **main happy path left-to-right on a single horizontal line**:
+  `User ──▶ Web/Teams ──▶ App Gateway ──▶ Azure APIM ──▶ ChatPG Frontend ──▶ ChatPG Backend ──▶ GenAI Platform`
+  with the response arrow returning along the same line. Do **not** snake the main flow up and down.
+- Group all the auth providers (Authle, MSTF EntraID, PingFederate Prod Instance, PingID MFA, MSTF Active Directory) into **one clearly labelled cluster `Auth chain`** above or below the main line, with a single arrow into the main line at the auth step. Never draw 5 free-floating auth boxes.
+- Same-height boxes. One space of padding inside each label.
+- Use Unicode box-drawing characters: `┌ ┐ └ ┘ │ ─ ├ ┤ ┬ ┴ ┼ ▶ ◀ ▲ ▼`.
+- One arrow style per diagram: `──▶` for one-way calls, `◀──▶` for round-trips. **Do not mix.**
+- **No crossing lines.** If two arrows would cross, restructure — never draw through.
+- Use the **exact component labels from the `.md`** (e.g. write `PingFederate Prod Instance`, not `PingFed`).
+- Caption underneath: `Source: ChatPG - Communication Flow Diagram.md`.
 
-**Layout rules for clarity:**
-- Group components by **subscription** using clearly labeled outer boxes (one box per subscription). The subscription name and resource-group names go on the top border of each box.
-- Inside each subscription box, lay components vertically in logical groups (Services Container / Network / AKS / etc.) with a blank line between groups.
+**After the diagram**, list **6–8 numbered plain-English steps** narrating one full request from user prompt to response. Newbie level: no unexplained jargon, no internal CI numbers, no resource IDs. Each step should be one sentence. The diagram is the visual; this is the readable narration that goes with it.
+
+### 4. The stack — short bullets
+
+~6 bullets total. Frontend / Backend / Agent runtime / Infra / Identity / Observability. One short line each. Source: onboarding skill + AED `.md` + Confluence page if it adds anything concrete.
+
+### 5. How ChatPG is run in Azure — one ASCII diagram + 4 short bullets
+
+**Diagram:** generated from `ChatPG - TID.md`. Render exactly **one** ASCII diagram in a fenced ` ```text ` block. Follow these layout rules:
+
+- Group components by **Azure subscription** using clearly labelled outer boxes — one box per subscription. Put the subscription name and the resource-group names on the top border of each box.
+- Inside each subscription box, lay components vertically in logical groups (`Services Container`, `PGI Network`, `AKS`, etc.) with a blank line between groups.
 - Draw cross-subscription connections as arrows **between the subscription boxes**, with a short edge label naming the protocol (e.g. `HTTPS, L7` or `HTTP, REST`).
-- Put external systems (Spyglass, GenAI Platform, PingFederate, Entra ID, Microsoft Teams, Application Insights) in a **separate "External" cluster at the bottom** with arrows back into the relevant subscription boxes.
-- No crossing lines. Same arrow-style consistency rule as section 3.
-- Add a one-line caption: `Source: ChatPG - TID.md`.
+- Put external systems (Spyglass, GenAI Platform, PingFederate Prod Instance, Entra ID, Microsoft Teams, Application Insights) in a **separate `External` cluster at the bottom** with arrows back into the relevant subscription boxes.
+- No crossing lines. One arrow style consistent with section 3.
+- Caption underneath: `Source: ChatPG - TID.md`.
 
-Below the diagram, add 3–4 bullet facts about how releases ship, where secrets live, what is monitored, and where incidents are tracked. Source from the TID `.md` and the onboarding skill.
+**After the diagram**, add 4 short bullets:
+- How releases ship (CICD framework + GHA Runner)
+- Where secrets live (Key Vault)
+- What is monitored (Application Insights + Spyglass)
+- Where incidents are tracked (Jira TURING project)
 
-### 6. Where to go next — one small links table
+Source for these bullets: TID `.md` and the onboarding skill (and Confluence if fetched).
 
-5–6 rows: Confluence section, the three GitHub repo URLs, the local diagrams folder (`.github/skills/aie-sre-onboarding/Docs/ChatPG/`), Jira location for incidents. Take URLs from the onboarding skill — do not invent URLs.
+### 6. Where to go next — small links table
+
+A 5–6 row table. Take URLs from the onboarding skill — **do not invent URLs.**
+
+| Resource | Link |
+|----------|------|
+| ChatPG Confluence section | (from skill — TURING/4354081339) |
+| `de-cf-chatpg-core` repo | (GitHub Enterprise URL) |
+| `de-cf-chatpg-agents` repo | (GitHub Enterprise URL) |
+| `de-cf-chatpg-infra` repo | (GitHub Enterprise URL) |
+| Local diagrams folder | `.github/skills/aie-sre-onboarding/Docs/ChatPG/` |
+| Jira incidents | TURING project |
+
+If you don't have a URL in the onboarding skill, write `(see SKILL.md)` rather than fabricate one.
 
 ### 7. Reference material on disk
 
-List the `.md` analysis files you used (full paths under `.github/skills/aie-sre-onboarding/Docs/ChatPG/`) so the user can open the source material.
+List the `.md` files you actually read this turn, with their full repo-relative paths under `.github/skills/aie-sre-onboarding/Docs/ChatPG/`, plus the Confluence page ID if you fetched it. This lets the reader open the same source you used.
+
+### 8. Want to go deeper?
+
+End with **one focused offer**, never a 6-item menu. For example:
+
+> *"Want me to walk through the auth chain step-by-step, the agent runtime internals, the AKS deploy pipeline, or a recent incident playbook? Pick one and I'll dig in."*
+
+This is the only place you offer enhancement. Keep it to one line.
 
 ---
 
 ## Step 3 — Hard rules
 
-1. **Never skip Step 1.** Every diagram you draw must come from a `.md` analysis file you actually read in this turn. If the `.md` files are missing, refuse as documented in Step 1 — do not silently guess.
-2. **ASCII only — no Mermaid, no PlantUML, no other diagram syntaxes.** Sections 3 and 5 must each contain exactly one ASCII box diagram in a ` ```text ` fenced block. The ASCII version is the only diagram — it must be clean enough to stand on its own.
-3. **Do not invent specifics** — no incident IDs, no Azure resource IDs, no CI numbers, no code paths, unless they appear in the source `.md` files or the onboarding skill. If asked about something not covered: *"I don't have that in the onboarding overview — check the ChatPG Confluence page or the relevant repo."*
-4. **Use exact labels from the source `.md`** in your diagrams. If the source says `mlwCHATPGPROD`, write that — not "ML Workspace".
-5. **End with one focused follow-up offer**, e.g. *"Want me to go deeper on the auth chain, the agent runtime, or the deploy pipeline?"* — not a 6-item menu.
-6. **Length cap: ~180 lines total** including the two ASCII diagrams. If you go over, cut prose, never the diagrams.
-7. **Do not load the `github-chatpg` or `leanix` skills for this overview.** Those are for code-level questions and live LeanIX fetches respectively. This briefing is grounded in the local `.md` analyses and the onboarding skill — that's it.
+1. **Never skip Step 1.** Every diagram you draw must come from a `.md` analysis you actually read in this turn. If a `.md` is missing, refuse as documented in Step 1 — do not silently guess.
+2. **ASCII only — no Mermaid, no PlantUML, no other diagram syntaxes.** Sections 2, 3, and 5 must each contain exactly one ASCII diagram in a ` ```text ` fenced block. The ASCII diagram is the only diagram — it must stand on its own.
+3. **Newbie-first language.** Expand every internal acronym on first use (`AKS (Azure Kubernetes Service)`, `APIM (Azure API Management)`, `MFA (multi-factor auth)`). Subsequent uses can be the short form.
+4. **Use exact labels from the source `.md`** inside diagrams. If the source says `mlwCHATPGPROD`, write that — not "ML Workspace". If it says `PingFederate Prod Instance`, do not shorten to `PingFed`.
+5. **Do not invent specifics.** No incident IDs, no Azure resource IDs, no CI numbers, no code paths, no model names — unless they appear in the source `.md` files, the onboarding skill, or the live Confluence fetch. If asked about something not covered: *"I don't have that in the onboarding overview — check the ChatPG Confluence page or the relevant repo."*
+6. **Use the Atlassian MCP, not memory, for Confluence/Jira facts.** If the MCP isn't configured, say so once at the top and proceed with local sources. Don't retry, don't halt.
+7. **Length cap: ~220 lines total** including the three ASCII diagrams. If you go over, cut prose — never the diagrams.
+8. **Do not load the `github-chatpg` or `leanix` skills for this overview.** Those are for code-level questions and live LeanIX fetches respectively. This briefing is grounded in the local `.md` analyses + the ChatPG Confluence page only.
+9. **End with exactly one deeper-dive offer (Section 8).** No trailing summary, no "let me know if you have questions", no second menu.
