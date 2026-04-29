@@ -52,6 +52,11 @@ Each confluence tree section for each application/platform contains the followin
 - Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/4345495562/AskPG
 ### ChatPG:
 - Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/4354081339/ChatPG
+### ChatPG:
+- Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/4354081339/ChatPG
+- **For an onboarding overview of ChatPG, run the slash command `/chatpg-onboarding`.** That prompt reads the local LeanIX-exported architecture PNGs and produces a concise 7-section briefing with ASCII + Mermaid flow diagrams generated from those PNGs. Use it for any "what is ChatPG / how does it work / how is it managed / explain the architecture" question.
+- Reference architecture PNGs (offline, exported from LeanIX) live under `.github/skills/aie-sre-onboarding/Docs/ChatPG/`.
+- Reference architecture PNGs (offline, exported from LeanIX) live under `.github/skills/aie-sre-onboarding/Docs/ChatPG/`.
 ### ImagePG:
 - Confluence section - https://jira-pg-ds.atlassian.net/wiki/spaces/TURING/pages/4400185560/ImagePG
 ### InsightsPG:
