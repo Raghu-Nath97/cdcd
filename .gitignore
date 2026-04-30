@@ -28,3 +28,6 @@ Thumbs.db
 # Logs
 *.log
 /tmp/
+
+# VS Code MCP config (contains secrets)
+.vscode/mcp.json
